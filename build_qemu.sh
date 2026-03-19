@@ -1,3 +1,4 @@
+mkdir -p ~/build_qemu;
 cd ~/build_qemu;
 
 ../qemu/configure \
