@@ -11,6 +11,8 @@ ninja-build \
 libglib2.0-dev \
 libncurses5-dev libncursesw5-dev \
 swtpm \
+qemu-system-riscv-hwe \
+
 
 
 ```
@@ -21,10 +23,10 @@ swtpm \
 
 ```bash
 ./pre_build_qemu.sh
+./git_qemu.sh
 ./build_qemu.sh
 mkdir image
 cd !$
-./build_qemu.sh
 ./kernel_image.sh
 ./execute_qemu.sh or ./execute_qemu_tpm.sh
 ```
