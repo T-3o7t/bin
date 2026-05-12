@@ -2,7 +2,7 @@ mkdir -p ~/build_qemu;
 cd ~/build_qemu;
 
 ../qemu/configure \
---prefix=/home/taniguchi/qemu-riscv \
+--prefix=/home/user/qemu-riscv \
 --target-list=riscv64-linux-user,riscv64-softmmu,x86_64-softmmu,x86_64\
 -linux-user \
 --enable-tpm    \
