@@ -10,5 +10,13 @@ libpam0g-dev \
 libnuma-dev \
 librdmacm-dev libibverbs-dev \
 libfuse3-dev \
-libbpf-dev libelf-dev zlib1g-dev
+libbpf-dev libelf-dev zlib1g-dev　\
+build-essential \
+python4-venv \
+ninja-build \
+libglib2.0-dev \
+libncurses5-dev libncursesw5-dev \
+swtpm \
+qemu-system-riscv-hwe \
+u-boot-qemu
 
