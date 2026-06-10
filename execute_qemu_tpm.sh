@@ -1,9 +1,9 @@
 cd ~/build_qemu;
 
-mkdir -p /tmp/emulated_tpm;
+mkdir -p /tmp/emulated_tpm_qemu;
 
-swtpm socket --tpmstate dir=/tmp/emulated_tpm \
-         --ctrl type=unixio,path=/tmp/emulated_tpm/swtpm-sock \
+swtpm socket --tpmstate dir=/tmp/emulated_tpm_qemu \
+         --ctrl type=unixio,path=/tmp/emulated_tpm_qemu/swtpm-sock \
          --log level=20 --tpm2 \
          --daemon;
 
@@ -15,6 +15,6 @@ qemu-system-riscv64 \
   -device virtio-net-device,netdev=net0 \
   -device virtio-rng-pci \
   -drive file=~/image/ubuntu-24.04.4-preinstalled-server-riscv64.img,format=raw,if=virtio \
-  -chardev socket,id=chrtpm,path=/tmp/emulated_tpm/swtpm-sock \
+  -chardev socket,id=chrtpm,path=/tmp/emulated_tpm_qemu/swtpm-sock \
   -tpmdev emulator,id=tpm0,chardev=chrtpm \
   -device tpm-tis-device,tpmdev=tpm0
