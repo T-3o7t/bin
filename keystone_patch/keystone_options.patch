@@ -1,10 +1,10 @@
-diff --git a/overlays/keystone/board/cva6/cva6-sdk b/overlays/keystone/board/cva6/cva6-sdk
---- a/overlays/keystone/board/cva6/cva6-sdk
-+++ b/overlays/keystone/board/cva6/cva6-sdk
-@@ -1 +1 @@
--Subproject commit cb35d1dba01da51b1489fb109f1b5598bd655267
-+Subproject commit cb35d1dba01da51b1489fb109f1b5598bd655267-dirty
-diff --git a/overlays/keystone/configs/linux64-defconfig b/overlays/keystone/configs/linux64-defconfig
+#diff --git a/overlays/keystone/board/cva6/cva6-sdk b/overlays/keystone/board/cva6/cva6-sdk
+#--- a/overlays/keystone/board/cva6/cva6-sdk
+#+++ b/overlays/keystone/board/cva6/cva6-sdk
+#@@ -1 +1 @@
+#-Subproject commit cb35d1dba01da51b1489fb109f1b5598bd655267
+#+Subproject commit cb35d1dba01da51b1489fb109f1b5598bd655267-dirty
+#diff --git a/overlays/keystone/configs/linux64-defconfig b/overlays/keystone/configs/linux64-defconfig
 index f6e0086..93d5f5d 100644
 --- a/overlays/keystone/configs/linux64-defconfig
 +++ b/overlays/keystone/configs/linux64-defconfig
