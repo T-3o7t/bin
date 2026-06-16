@@ -1,7 +1,7 @@
 set(eapp_bin mytest)
 set(eapp_src eapp/mytest.c)
 set(host_bin mytest-runner)
-set(host_src host/host.cpp host/host.h host/quote.c host/quote.h host/mytest-runner.cpp)
+set(host_src host/host.cpp host/host.h host/quote.c host/quote.h host/mytest-runner.cpp host/verifier.h host/verifier.cpp)
 set(package_name "mytest.ke")
 set(eyrie_plugins "none")
 

@@ -7,6 +7,7 @@
 #include <tss2/tss2_rc.h>
 #include <tss2/tss2_common.h>
 
+
 static void ctx_finalize(TSS2_TCTI_CONTEXT *tcti, TSS2_SYS_CONTEXT *sys){
     if(sys){
         Tss2_Sys_Finalize(sys);
@@ -22,47 +23,13 @@ static void ctx_finalize(TSS2_TCTI_CONTEXT *tcti, TSS2_SYS_CONTEXT *sys){
 static int rc_check(TSS2_RC rc, TSS2_TCTI_CONTEXT *tcti, TSS2_SYS_CONTEXT *sys){
     if(rc != TSS2_RC_SUCCESS){
         printf("%s\n", Tss2_RC_Decode(rc));
-            ctx_finalize(tcti, sys);
-            return -1;
-    }
-	return 0;
-}
-
-static int save_signature(TPMT_SIGNATURE *sig, const char *path){
-    FILE *fp = fopen(path, "wb");
-    if(!fp){
-        perror("fopen");
-        return -1;
-    }
-
-    size_t written = fwrite(sig->signature.rsassa.sig.buffer, 1, sig->signature.rsassa.sig.size, fp);
-    fclose(fp);
-
-    if(written != sig->signature.rsassa.sig.size){
-        fprintf(stderr, "failed to write signature file\n");
+        ctx_finalize(tcti, sys);
         return -1;
     }
 	return 0;
 }
 
-static int save_quote(TPM2B_ATTEST *quote, const char *path){
-    FILE *fp = fopen(path, "wb");
-    if(!fp){
-        perror("fopen");
-        return -1;
-    }
-
-    size_t size = fwrite(quote->attestationData, 1, quote->size, fp);
-    fclose(fp);
-
-    if(size != quote->size){
-        fprintf(stderr, "failed to write\n");
-        return -1;
-    }
-	return 0;
-}
-
-int test_quote(){
+int test_quote(QuoteResult *result){
     TSS2_RC rc;
     size_t size;
     static TSS2_SYS_CONTEXT *s_ctx;
@@ -131,13 +98,76 @@ int test_quote(){
             );
     rc_check(rc, t_ctx, s_ctx);
     printf("quote OK\n");
-
+/*
     save_signature(&signature, "sig.bin");
     printf("signature save OK\n");
 
     save_quote(&quote, "quote.bin");
     printf("quote save OK\n");
+*/
+	TSS2L_SYS_AUTH_COMMAND CmdAuth_quote = {0};
+    CmdAuth_quote.count = 1;
+    CmdAuth_quote.auths -> sessionHandle = TPM2_RS_PW;
 
+	TPML_DIGEST_VALUES value;
+    value.count = 1;
+    value.digests -> hashAlg = TPM2_ALG_SHA256;
+    memcpy(value.digests -> digest.sha256, nonce.buffer, nonce.size);
+
+	rc = Tss2_Sys_PCR_Extend(
+			s_ctx,
+			16,
+			&CmdAuth_quote,
+			&value,
+			&rspAuth
+			);
+	rc_check(rc, t_ctx, s_ctx);
+	printf("Extend OK\n");
+
+	TPM2B_MAX_BUFFER data_quote;
+    data_quote.size = quote.size;
+    memcpy(data_quote.buffer, quote.attestationData, data_quote.size);
+
+    TPM2B_DIGEST hash_quote = {0};
+    TPMT_TK_HASHCHECK validation_quote;
+    TPMT_TK_VERIFIED validation_verify_quote;
+
+    rc = Tss2_Sys_Hash(
+            s_ctx,
+            NULL,
+            &data_quote,
+            TPM2_ALG_SHA256,
+            TPM2_RH_NULL,
+            &hash_quote,
+            &validation_quote,
+            NULL
+            );
+    rc_check(rc, t_ctx, s_ctx);
+    printf("quote hash OK\n");
+
+    rc = Tss2_Sys_VerifySignature(
+                    s_ctx,
+                    handle,
+                    NULL,
+                    &hash_quote,
+                    &signature,
+                    &validation_verify_quote,
+                    &rspAuth
+                    );
+    rc_check(rc, t_ctx, s_ctx);
+    printf("quote verify OK\n");
+
+	result->quote_size = quote.size;
+	memcpy(result->quote, quote.attestationData, quote.size);
+
+	result->sig_size = signature.signature.rsassa.sig.size;
+	memcpy(result->signature, signature.signature.rsassa.sig.buffer, result->sig_size);
+/*
+	printf("HOST quote[0]=%u\n", result->quote[0]);
+  	printf("HOST quote[1]=%u\n", result->quote[1]);
+	printf("HOST quote[2]=%u\n", (unsigned)result->quote[2]);
+	printf("HOST quote[3]=%u\n", (unsigned)result->quote[3]);
+*/
     ctx_finalize(t_ctx, s_ctx);
     return 0;
 }

@@ -12,6 +12,7 @@
 #include "edge/edge_common.h"
 #include "host/keystone.h"
 #include "verifier/report.h"
+#include "../common/common.h"
 
 class SharedBuffer {
  public:
@@ -32,6 +33,8 @@ class SharedBuffer {
   void set_ok();
   void setup_ret_or_bad_ptr(unsigned long ret_val);
   void setup_wrapped_ret_or_bad_ptr(const std::string& ret_val);
+
+  void setup_quote_result_or_bad_ptr(const QuoteResult& result);
 
  private:
   uintptr_t data_ptr();

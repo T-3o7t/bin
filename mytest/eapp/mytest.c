@@ -5,6 +5,7 @@
 #include "app/eapp_utils.h"
 #include "app/syscall.h"
 #include "edge/edge_common.h"
+#include "../common/common.h"
 
 #define OCALL_PRINT_BUFFER 1
 #define OCALL_PRINT_VALUE 2
@@ -32,7 +33,23 @@ main() {
 
   ocall(OCALL_COPY_REPORT, buffer, 2048, 0, 0);
 
-  ocall(OCALL_EXECUTE_TEST, NULL, 0, NULL, 0);
+  struct edge_data quote_data;
+  ocall(OCALL_EXECUTE_TEST, NULL, 0, &quote_data, sizeof(struct edge_data));
+  if (quote_data.size != sizeof(QuoteResult)) EAPP_RETURN(-1);
 
+  QuoteResult result;
+  copy_from_shared(&result, quote_data.offset, sizeof(QuoteResult));
+
+  /*
+  unsigned long debug;
+  debug = result.quote[0];
+  ocall(OCALL_PRINT_VALUE, &debug, sizeof(unsigned long), 0, 0);
+  debug = result.quote[1];
+  ocall(OCALL_PRINT_VALUE, &debug, sizeof(unsigned long), 0, 0);
+  debug = result.quote[2];
+  ocall(OCALL_PRINT_BUFFER, &debug, sizeof(unsigned long), 0, 0);
+  debug = result.quote[3];
+  ocall(OCALL_PRINT_BUFFER, &debug, sizeof(unsigned long), 0, 0);
+  */
   EAPP_RETURN(0);
 }
