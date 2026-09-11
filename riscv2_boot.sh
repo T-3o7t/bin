@@ -6,4 +6,5 @@ powershell.exe -Command "Start-Process powershell -Verb RunAs -ArgumentList '-Co
 sudo minicom
 
 # 3. ファイルコピー
-powershell.exe -Command "Copy-Item 'C:/Users/Lab_student/Desktop/bootloader_addr5_secboot.bin' -Destination 'D:/'"
+# powershell.exe -Command "Copy-Item 'C:/Users/Lab_student/Desktop/bootloader_addr5_secboot.bin' -Destination 'D:/'"
+powershell.exe -Command "try { Copy-Item 'C:/Users/Lab_student/Desktop/bootloader_addr5_secboot.bin' -Destination 'D:/' -ErrorAction Stop } catch { Write-Host 'Copy triggered device reset (expected)' }"
