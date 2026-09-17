@@ -1,9 +1,9 @@
 #!/bin/bash
 # --- 設定 ---
-TTERM="/mnt/c/Program Files (x86)/teraterm/ttermpro.exe"
-COM=3          # デバイスマネージャで確認したCOM番号
+TTERM="/mnt/c/Users/Lab_student/AppData/Local/Programs/teraterm5/ttermpro.exe"
+COM=5          # デバイスマネージャで確認したCOM番号
 BAUD=115200
-BIN="C:/Users/Lab_student/Desktop/bootloader_addr5_secboot.bin"
+BIN="C:\Users\Lab_student\Desktop\bootloader_addr5_secboot.bin"
 
 # 1. Tera Termでシリアルポートを開く（usbipd attach / minicom は不要）
 "$TTERM" /C=$COM /BAUD=$BAUD &
