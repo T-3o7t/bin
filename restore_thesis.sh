@@ -18,7 +18,7 @@
 set -e
 
 SRC="${SRC:-$HOME/tex_thesis}"
-DEST="${DEST:-/mnt/c/Users/Lab_stndents/OneDrive - Akita Prefectural University/Lab/thesis/tex_フォーマット_卒論用/latex_thesis}"
+DEST="${DEST:-/mnt/c/Users/Lab_stndents/OneDrive - Akita Prefectural University/Lab/thesis/latex_thesis}"
 HISTORY_ROOT="$(dirname "${DEST}")/latex_thesis_history"
 LOCAL_HISTORY="${HOME}/tex_thesis_restore_history/$(date +%Y%m%d-%H%M%S)"
 

@@ -12,7 +12,7 @@
 set -e
 
 SRC="${SRC:-$HOME/tex_thesis}"
-DEST="${DEST:-/mnt/c/Users/Lab_stndents/OneDrive - Akita Prefectural University/Lab/thesis/tex_フォーマット_卒論用/latex_thesis}"
+DEST="${DEST:-/mnt/c/Users/Lab_stndents/OneDrive - Akita Prefectural University/Lab/thesis/latex_thesis}"
 HISTORY="$(dirname "${DEST}")/latex_thesis_history/$(date +%Y%m%d-%H%M%S)"
 
 # 冒頭のコメント (このファイルの説明) をそのままヘルプとして表示する
